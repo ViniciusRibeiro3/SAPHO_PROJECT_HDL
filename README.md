@@ -12,6 +12,11 @@ repetíveis, sem conversor A/D e sem instrumentação externa. O mesmo HDL roda 
 (Verilator, pelo AURORA) e na placa, então o resultado da placa pode ser comparado com o da
 simulação.
 
+> **Estado (16/11/2026):** simulação validada contra o modelo em Python e projeto compilado
+> no Quartus 23.1 (0 erros, folgas de tempo positivas). O teste na placa deste exemplo ainda
+> está em andamento; a infraestrutura (anel do ARM, ADC virtual, FIFO, buffer duplo) é a mesma
+> já validada na placa no projeto do TCC.
+
 O projeto nasceu do TCC *Implementação em FPGA de algoritmo para estimação de fasores
 harmônicos* (Vinicius Ribeiro da Silva, UFJF, 2026), em que essa infraestrutura levou um
 estimador de fasores harmônicos com dois processadores SAPHO para a placa. Aqui ela vem com
