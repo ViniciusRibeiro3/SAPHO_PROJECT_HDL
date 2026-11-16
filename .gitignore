@@ -4,6 +4,8 @@ firmware/.aurora*/
 firmware/.slang/
 firmware/*/*/
 firmware/sim_io/
+firmware/*.mif
+firmware/pc_*.txt
 *.vcd
 *.fst
 *.hier
