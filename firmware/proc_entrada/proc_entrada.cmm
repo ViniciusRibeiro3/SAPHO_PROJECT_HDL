@@ -1,0 +1,54 @@
+//#PRNAME proc_entrada
+#NUBITS 32
+#NDSTAC 10
+#SDEPTH 10
+#NUIOIN 1
+#NUIOOU 1
+#NBMANT 23
+#NBEXPO 8
+#NUGAIN 128
+#FROUND 2
+
+// ============================================================================
+// PROCESSADOR DE ENTRADA (exemplo): media movel de 4 amostras
+// ----------------------------------------------------------------------------
+// Roda em laco livre. Le uma amostra do ADC virtual em in(0), filtra e escreve o
+// resultado na FIFO que liga os dois processadores (out(0)).
+//
+// Entrada  in(0) : amostra de 16 bits (do anel que o ARM alimenta), entregue pelo
+//                  ADC virtual na taxa de amostragem. Com a FIFO do ADC vazia, o
+//                  in(0) devolve -2^31 (fora da faixa de 16 bits): o processador
+//                  SAPHO nao espera o dado, entao o laco abaixo pede de novo.
+// Saida    out(0): y em micro-unidades (y * 10^6, inteiro), uma palavra por amostra.
+//
+// Para usar o seu processador: troque o calculo de y. Mantenha o laco de espera do
+// in(0) e uma escrita em out(0) por amostra (cada escrita vai para a FIFO).
+// ============================================================================
+
+void main()
+{
+    int   x_in = 0;              // amostra lida (-2^31 = a FIFO do ADC esta vazia)
+    float x0 = 0.0;              // x[n]
+    float x1 = 0.0;              // x[n-1]
+    float x2 = 0.0;              // x[n-2]
+    float x3 = 0.0;              // x[n-3]
+    float y  = 0.0;
+
+    while (1)
+    {
+        x_in = in(0);
+        while (x_in < -40000)    // FIFO do ADC vazia: pede de novo
+        {
+            x_in = in(0);
+        }
+
+        x3 = x2;
+        x2 = x1;
+        x1 = x0;
+        x0 = x_in / 32768.0;     // amostra normalizada em [-1, 1)
+
+        y = 0.25 * (x0 + x1 + x2 + x3);
+
+        fout(0, y * 1000000);    // -> FIFO entre os processadores
+    }
+}

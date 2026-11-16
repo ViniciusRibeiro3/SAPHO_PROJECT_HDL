@@ -1,0 +1,84 @@
+//#PRNAME proc_saida
+#NUBITS 32
+#NDSTAC 10
+#SDEPTH 10
+#NUIOIN 1
+#NUIOOU 2
+#NBMANT 23
+#NBEXPO 8
+#NUGAIN 128
+#FROUND 2
+
+// ============================================================================
+// PROCESSADOR DE SAIDA (exemplo): estatisticas de blocos de N amostras
+// ----------------------------------------------------------------------------
+// Roda por INTERRUPCAO: o main() so inicializa e retorna; o trecho depois de
+// #PRACA e executado uma vez a cada pulso que a maquina de estados (maq_estados.v)
+// manda quando ha amostra na FIFO e este processador esta livre. Cada execucao
+// consome UMA amostra.
+//
+// Entrada  in(0) : amostra da FIFO (micro-unidades, saida do proc_entrada).
+// Saida    out(1): flag de ocupado (1) / livre (0) -- a maquina de estados le o bit 0.
+//          out(0): o REPORTE, NPAL = 5 palavras seguidas a cada N amostras:
+//                    [indice do bloco, media * 10^6, potencia media * 10^6,
+//                     maximo, minimo]   (maximo e minimo em micro-unidades)
+//                  A maquina de saida (maq_ctrl_mem_linux.v) grava as palavras na
+//                  memoria que o ARM le; o ARM grava uma linha do CSV por reporte.
+//
+// Para usar o seu processador: mantenha o out(1,1) no inicio, o out(1,0) no fim e
+// as NPAL escritas em out(0) por reporte (NPAL tem de ser o mesmo no Verilog e no ARM).
+// ============================================================================
+
+void main()
+{
+    int   N     = 256;           // amostras por bloco
+    int   n     = 0;             // amostras ja acumuladas no bloco
+    int   bloco = 0;             // indice do bloco: o ARM confere a continuidade por ele
+    int   x     = 0;             // amostra lida da FIFO (micro-unidades)
+    int   xmax  = 0;
+    int   xmin  = 0;
+    float xf    = 0.0;
+    float soma  = 0.0;
+    float soma2 = 0.0;
+
+    return;
+    #PRACA
+        out(1, 1);                           // ocupado
+
+        x  = in(0);
+        xf = x / 1000000.0;
+        soma  = soma + xf;
+        soma2 = soma2 + xf * xf;
+        if (n == 0)
+        {
+            xmax = x;
+            xmin = x;
+        }
+        else
+        {
+            if (x > xmax)
+            {
+                xmax = x;
+            }
+            if (x < xmin)
+            {
+                xmin = x;
+            }
+        }
+        n = n + 1;
+
+        if (n == N)                          // fim do bloco: emite o reporte
+        {
+            out(0, bloco);
+            fout(0, soma * 0.00390625 * 1000000);    // media (1/256 = 0,00390625)
+            fout(0, soma2 * 0.00390625 * 1000000);   // potencia media
+            out(0, xmax);
+            out(0, xmin);
+            bloco = bloco + 1;
+            n     = 0;
+            soma  = 0.0;
+            soma2 = 0.0;
+        }
+
+        out(1, 0);                           // livre
+}

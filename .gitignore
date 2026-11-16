@@ -1,0 +1,46 @@
+# ---- AURORA (projeto e saidas geradas; o .spf tem caminhos absolutos) ----
+firmware/*.spf
+firmware/.aurora*/
+firmware/.slang/
+firmware/*/*/
+firmware/sim_io/
+*.vcd
+*.fst
+*.hier
+
+# ---- Quartus / Platform Designer (regenerado pelo quartus/compilar.ps1) ----
+quartus/db/
+quartus/incremental_db/
+quartus/output_files/
+quartus/soc_system/
+quartus/hps_isw_handoff/
+quartus/.qsys_edit/
+quartus/greybox_tmp/
+quartus/*.qws
+quartus/*.rpt
+quartus/*.summary
+quartus/*.smsg
+quartus/*.done
+quartus/*.jdi
+quartus/*.pin
+quartus/*.sld
+quartus/*.sopcinfo
+quartus/*.qarlog
+quartus/*.qar
+quartus/*.bak
+quartus/*.log
+quartus/c5_pin_model_dump.txt
+quartus/hps_sdram_p0_*
+quartus/soc_system.html
+quartus/soc_system_generation.rpt
+quartus/*.rbf
+quartus/*.dts
+
+# ---- ARM ----
+arm/*.o
+
+# ---- Python e resultados ----
+__pycache__/
+*.pyc
+.venv/
+resultados/
