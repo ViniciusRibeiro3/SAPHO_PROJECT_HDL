@@ -12,10 +12,10 @@ repetíveis, sem conversor A/D e sem instrumentação externa. O mesmo HDL roda 
 (Verilator, pelo AURORA) e na placa, então o resultado da placa pode ser comparado com o da
 simulação.
 
-> **Estado (16/11/2026):** simulação validada contra o modelo em Python e projeto compilado
-> no Quartus 23.1 (0 erros, folgas de tempo positivas). O teste na placa deste exemplo ainda
-> está em andamento; a infraestrutura (anel do ARM, ADC virtual, FIFO, buffer duplo) é a mesma
-> já validada na placa no projeto do TCC.
+> **Estado (16/11/2026):** validado na simulação e **na placa**. Numa corrida de 1 minuto na
+> DE10-Nano (3600 reportes, 921 600 amostras a 15 359,9 por segundo), os reportes batem com o
+> modelo em Python (diferença ≤ 1 unidade), com 0 amostras perdidas e as duas FIFOs com
+> ocupação máxima 1. Compilado no Quartus 23.1 (0 erros, folgas de tempo positivas).
 
 O projeto nasceu do TCC *Implementação em FPGA de algoritmo para estimação de fasores
 harmônicos* (Vinicius Ribeiro da Silva, UFJF, 2026), em que essa infraestrutura levou um

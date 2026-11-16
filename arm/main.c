@@ -104,6 +104,9 @@ int main( int argc, char **argv ) {
 	// ---- reset, limpa a memoria de saida e liga o projeto (bit 6 do led_pio) ----
 	*led = 0x00;  usleep( 100000 );
 	for( i = 0; i < OMEM_WORDS; i++ ) omem[i] = 0;
+	// com o FPGA em reset ninguem escreve na palavra 0: sem zerar, ela guarda o total de
+	// amostras da execucao anterior ate a 1a amostra desta, e o teste de underrun dispara a toa
+	iram[0] = 0;
 	*led = 0x40;
 	long t0 = agora_us();
 
