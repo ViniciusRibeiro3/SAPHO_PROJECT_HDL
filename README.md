@@ -18,7 +18,7 @@ simulação.
 > ocupação máxima 1. Compilado no Quartus 23.1 (0 erros, folgas de tempo positivas).
 
 O projeto nasceu do TCC *Implementação em FPGA de algoritmo para estimação de fasores
-harmônicos* (Vinicius Ribeiro da Silva, UFJF, 2026), em que essa infraestrutura levou um
+harmônicos* (Vinicius Ribeiro, UFJF, 2026), em que essa infraestrutura levou um
 estimador de fasores harmônicos com dois processadores SAPHO para a placa. Aqui ela vem com
 dois processadores pequenos de exemplo, para serem trocados pelos seus.
 
@@ -167,4 +167,4 @@ binarios/           .sof e programa do ARM prontos
   foi feito; o núcleo em `hdl/sapho/` está incluído com a autorização dos desenvolvedores.
 - Topo da placa e sistema do ARM (`quartus/DE10_NANO_SoC_GHRD.v`, `soc_system.qsys`): baseados
   no *Golden Hardware Reference Design* da Terasic para a DE10-Nano.
-- Infraestrutura de entrada e saída pelo ARM, ADC virtual e exemplo: Vinicius Ribeiro da Silva.
+- Infraestrutura de entrada e saída pelo ARM, ADC virtual e exemplo: Vinicius Ribeiro.
